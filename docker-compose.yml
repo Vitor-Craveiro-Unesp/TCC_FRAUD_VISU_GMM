@@ -1,0 +1,16 @@
+services:
+
+  projeto_tcc_2026:
+
+    build: .
+
+    volumes:
+      - .:/projeto_tcc_2026
+
+    working_dir: /projeto_tcc_2026
+
+    stdin_open: true
+
+    tty: true
+
+    command: sleep infinity
