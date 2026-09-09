@@ -1,9 +1,14 @@
 # ============================================================
 # BASES DE DADOS
 # ============================================================
+
+# Ignorar arquivos pesados das bases
 dados/**/*.csv
 dados/**/*.parquet
 dados/**/*.feather
+
+# Permitir o arquivo com o link do Kaggle
+!dados/dados_primarios/kaggle_link.txt
 
 # ============================================================
 # PYTHON
