@@ -1,14 +1,14 @@
 # ============================================================
-# BASES DE DADOS
+# DATASETS
 # ============================================================
 
-# Ignorar arquivos pesados das bases
-dados/**/*.csv
-dados/**/*.parquet
-dados/**/*.feather
+# Ignore dataset files
+data/**/*.csv
+data/**/*.parquet
+data/**/*.feather
 
-# Permitir o arquivo com o link do Kaggle
-!dados/dados_primarios/kaggle_link.txt
+# Allow TXT files
+!data/**/*.txt
 
 # ============================================================
 # PYTHON
@@ -24,13 +24,13 @@ __pycache__/
 .ipynb_checkpoints/
 
 # ============================================================
-# AMBIENTES VIRTUAIS LOCAIS
+# LOCAL VIRTUAL ENVIRONMENTS
 # ============================================================
 .venv/
 venv/
 
 # ============================================================
-# SISTEMA
+# SYSTEM
 # ============================================================
 .DS_Store
 Thumbs.db
