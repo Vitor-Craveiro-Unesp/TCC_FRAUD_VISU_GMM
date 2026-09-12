@@ -1,0 +1,40 @@
+MATRIX_FEATURE,SOURCE_FEATURE,FEATURE_GROUP,REPRESENTATION,CATEGORY,IS_OHE,MEAN,STANDARD_DEVIATION,CONSTANT_FEATURE
+SEND_AGE,SEND_AGE,Continuous numerical,Original numerical,,False,52.88414059303494,17.402901118453126,False
+TRANS_VALUE,TRANS_VALUE,Continuous numerical,Original numerical,,False,70.06356747215192,159.2539745913633,False
+TRANS_DAY,TRANS_DAY,Discrete numerical,Original numerical,,False,15.850756372564367,8.876245108669666,False
+SEND_POP_REGISTER,SEND_POP_REGISTER,Discrete numerical,Original numerical,,False,88643.67450931066,301487.6183436501,False
+SEND_LAT_REGISTER,SEND_LAT_REGISTER,Continuous geographic,Original numerical,,False,38.53931090358668,5.071470393027104,False
+SEND_LONG_REGISTER,SEND_LONG_REGISTER,Continuous geographic,Original numerical,,False,-90.22783233726862,13.747894936383103,False
+RECEIVE_LAT,RECEIVE_LAT,Continuous geographic,Original numerical,,False,38.538975968126955,5.105603878037201,False
+RECEIVE_LONG,RECEIVE_LONG,Continuous geographic,Original numerical,,False,-90.227939508327,13.759692112127356,False
+SEND_GENDER_BE,SEND_GENDER_BE,Binary encoding,Temporary binary encoding,,False,0.45219591512388835,0.49770965752741364,False
+TRANS_YEAR_BE,TRANS_YEAR_BE,Binary encoding,Temporary binary encoding,,False,0.5007271671145556,0.4999996061881088,False
+TRANS_NUM_CARD_FEWF,TRANS_NUM_CARD_FEWF,Frequency encoding with fallback,Temporary FEWF,,False,0.0014029423869112176,0.0005741325796740663,False
+SEND_NAME_FEWF,SEND_NAME_FEWF,Frequency encoding with fallback,Temporary FEWF,,False,0.0014185873599420393,0.0005927541953444055,False
+SEND_JOB_FEWF,SEND_JOB_FEWF,Frequency encoding with fallback,Temporary FEWF,,False,0.0030379548491077887,0.001555582463179393,False
+RECEIVE_LOC_FEWF,RECEIVE_LOC_FEWF,Frequency encoding with fallback,Temporary FEWF,,False,0.0015783518870309688,0.00040751790547805526,False
+TRANS_MONTH_SIN,TRANS_MONTH_SIN,Cyclical sine/cosine,Original cyclical component,,False,-0.048209232778279584,0.6897400923309345,False
+TRANS_MONTH_COS,TRANS_MONTH_COS,Cyclical sine/cosine,Original cyclical component,,False,-0.023398744719108713,0.7220716675086069,False
+TRANS_HOUR_SIN,TRANS_HOUR_SIN,Cyclical sine/cosine,Original cyclical component,,False,-0.13734077197519992,0.6929447133420342,False
+TRANS_HOUR_COS,TRANS_HOUR_COS,Cyclical sine/cosine,Original cyclical component,,False,0.003376801641690461,0.7077812259720775,False
+TRANS_WEEK_OHEWI_Friday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Friday,True,0.11610812818439274,0.32035462562029016,False
+TRANS_WEEK_OHEWI_Monday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Monday,True,0.19942733565321416,0.3995699683867244,False
+TRANS_WEEK_OHEWI_Saturday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Saturday,True,0.1421009785175292,0.3491537716152231,False
+TRANS_WEEK_OHEWI_Sunday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Sunday,True,0.18553126386719024,0.3887280483452138,False
+TRANS_WEEK_OHEWI_Thursday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Thursday,True,0.11160746579831289,0.3148829828720809,False
+TRANS_WEEK_OHEWI_Tuesday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Tuesday,True,0.1459408743496254,0.3530470263729505,False
+TRANS_WEEK_OHEWI_Wednesday,TRANS_WEEK_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,Wednesday,True,0.09928395362973536,0.29904297092168497,False
+RECEIVE_CATEGORY_OHEWI_entertainment,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,entertainment,True,0.07240252343723852,0.25915330268622633,False
+RECEIVE_CATEGORY_OHEWI_food_dining,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,food_dining,True,0.07057299904879848,0.25611030097134485,False
+RECEIVE_CATEGORY_OHEWI_gas_transport,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,gas_transport,True,0.10150594312009216,0.30199757592793375,False
+RECEIVE_CATEGORY_OHEWI_grocery_net,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,grocery_net,True,0.03502386641286897,0.18384018450685988,False
+RECEIVE_CATEGORY_OHEWI_grocery_pos,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,grocery_pos,True,0.09511529404651495,0.2933742002090587,False
+RECEIVE_CATEGORY_OHEWI_health_fitness,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,health_fitness,True,0.06615925121761353,0.2485603308023677,False
+RECEIVE_CATEGORY_OHEWI_home,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,home,True,0.0947206695767747,0.29282880770589126,False
+RECEIVE_CATEGORY_OHEWI_kids_pets,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,kids_pets,True,0.08730701999682573,0.2822845147597747,False
+RECEIVE_CATEGORY_OHEWI_misc_net,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,misc_net,True,0.04893883266734831,0.21574023373220808,False
+RECEIVE_CATEGORY_OHEWI_misc_pos,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,misc_pos,True,0.06166560677695998,0.24054727384582753,False
+RECEIVE_CATEGORY_OHEWI_personal_care,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,personal_care,True,0.07022534082921884,0.2555264713937863,False
+RECEIVE_CATEGORY_OHEWI_shopping_net,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,shopping_net,True,0.07521186097558079,0.26373296057360396,False
+RECEIVE_CATEGORY_OHEWI_shopping_pos,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,shopping_pos,True,0.08986371149982131,0.28598648396040904,False
+RECEIVE_CATEGORY_OHEWI_travel,RECEIVE_CATEGORY_OHEWI,One-Hot encoding with ignore,Temporary One-Hot dummy,travel,True,0.031287080394343754,0.17409254825060114,False

@@ -1,0 +1,3 @@
+SOURCE_FEATURE,REFERENCE_CATEGORY,TEMPORARILY_EXCLUDED_DUMMY,PURPOSE
+TRANS_WEEK_OHEWI,Friday,TRANS_WEEK_OHEWI_Friday,Remove structural OHE dependence for VIF diagnostics
+RECEIVE_CATEGORY_OHEWI,entertainment,RECEIVE_CATEGORY_OHEWI_entertainment,Remove structural OHE dependence for VIF diagnostics
