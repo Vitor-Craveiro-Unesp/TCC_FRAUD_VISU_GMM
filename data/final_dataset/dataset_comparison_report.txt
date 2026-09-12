@@ -1,6 +1,67 @@
 ====================================================================================================
-PRIMARY DATASET AND FINAL DATASET COMPARISON
+PRIMARY-TO-FINAL DATASET INTEGRITY VALIDATION AND COMPARISON REPORT
 ====================================================================================================
+
+Overall preprocessing integrity status: PASS
+
+
+====================================================================================================
+PREPROCESSING INTEGRITY CHECKS
+====================================================================================================
+                                              CHECK RESULT
+                              Primary NID is unique   PASS
+                          Primary NID is sequential   PASS
+         Primary and final row counts are identical   PASS
+                  Final feature count is exactly 22   PASS
+Final feature names and order match expected schema   PASS
+      Parquet metadata matches loaded final dataset   PASS
+                           Final NID_ALPHA is valid   PASS
+                          Final NID_ALPHA is unique   PASS
+                      Final NID_ALPHA is sequential   PASS
+    NID was preserved exactly and in the same order   PASS
+                        Final TARGET_OMEGA is valid   PASS
+                       Final TARGET_OMEGA is binary   PASS
+    TARGET values were preserved exactly row by row   PASS
+                  TARGET distribution was preserved   PASS
+           Final dataset contains no missing values   PASS
+
+
+====================================================================================================
+GENERAL DATASET COMPARISON
+====================================================================================================
+
+Primary dataset rows: 1852394
+Final dataset rows:   1852394
+
+Primary dataset features: 23
+Final dataset features:   22
+
+Primary dataset missing values: 0
+Final dataset missing values:   0
+
+Parquet metadata rows:     1852394
+Parquet metadata features: 22
+
+
+====================================================================================================
+DISK SPACE COMPARISON
+====================================================================================================
+
+Primary CSV size:  472.78 MB
+Final Parquet size: 64.34 MB
+Space saved:        408.44 MB
+Space reduction:    86.39%
+
+
+====================================================================================================
+TARGET DISTRIBUTION COMPARISON
+====================================================================================================
+              PRIMARY    FINAL
+TARGET_VALUE                  
+0             1842743  1842743
+1                9651     9651
+
+Exact row-by-row target preservation: PASS
 
 
 ====================================================================================================
@@ -38,55 +99,70 @@ DATA TYPES - FINAL DATASET
                FEATURE     TYPE
              NID_ALPHA    int32
    TRANS_NUM_CARD_FEWF    int64
-      RECEIVE_LOC_FEWF category
-RECEIVE_CATEGORY_OHEWI category
            TRANS_VALUE  float64
-        SEND_GENDER_BE category
-     SEND_LAT_REGISTER  float32
-    SEND_LONG_REGISTER  float32
-     SEND_POP_REGISTER    int32
-         SEND_JOB_FEWF category
-           RECEIVE_LAT  float32
-          RECEIVE_LONG  float32
              TRANS_DAY     int8
       TRANS_WEEK_OHEWI category
          TRANS_YEAR_BE    int16
-       TRANS_MONTH_SIN  float32
-       TRANS_MONTH_COS  float32
-        TRANS_HOUR_SIN  float32
-        TRANS_HOUR_COS  float32
+       TRANS_MONTH_SIN  float64
+       TRANS_MONTH_COS  float64
+        TRANS_HOUR_SIN  float64
+        TRANS_HOUR_COS  float64
         SEND_NAME_FEWF category
+        SEND_GENDER_BE category
               SEND_AGE  float32
+         SEND_JOB_FEWF category
+     SEND_LAT_REGISTER  float32
+    SEND_LONG_REGISTER  float32
+     SEND_POP_REGISTER    int32
+      RECEIVE_LOC_FEWF category
+RECEIVE_CATEGORY_OHEWI category
+           RECEIVE_LAT  float64
+          RECEIVE_LONG  float64
           TARGET_OMEGA     int8
 
 
 ====================================================================================================
-GENERAL COMPARISON
+PRIMARY-TO-FINAL FEATURE TRANSFORMATION MAP
+====================================================================================================
+      PRIMARY_FEATURE                     FINAL_FEATURE                                         TRANSFORMATION
+                  NID                         NID_ALPHA                                     Renamed identifier
+               cc_num               TRANS_NUM_CARD_FEWF                   Renamed and prepared for future FEWF
+                  amt                       TRANS_VALUE                              Renamed numerical feature
+trans_date_trans_time                         TRANS_DAY                                 Day of month extracted
+trans_date_trans_time                  TRANS_WEEK_OHEWI        Weekday extracted and prepared for future OHEWI
+trans_date_trans_time                     TRANS_YEAR_BE              Year extracted and prepared for future BE
+trans_date_trans_time TRANS_MONTH_SIN / TRANS_MONTH_COS Month converted to cyclical sine/cosine representation
+trans_date_trans_time   TRANS_HOUR_SIN / TRANS_HOUR_COS  Time converted to cyclical sine/cosine representation
+         first + last                    SEND_NAME_FEWF         Full name created and prepared for future FEWF
+               gender                    SEND_GENDER_BE                     Renamed and prepared for future BE
+                  dob                          SEND_AGE              Converted to decimal age using 2026-09-03
+                  job                     SEND_JOB_FEWF                   Renamed and prepared for future FEWF
+                  lat                 SEND_LAT_REGISTER                           Renamed geographical feature
+                 long                SEND_LONG_REGISTER                           Renamed geographical feature
+             city_pop                 SEND_POP_REGISTER                             Renamed population feature
+             merchant                  RECEIVE_LOC_FEWF                   Renamed and prepared for future FEWF
+             category            RECEIVE_CATEGORY_OHEWI                  Renamed and prepared for future OHEWI
+            merch_lat                       RECEIVE_LAT                              Renamed receiver latitude
+           merch_long                      RECEIVE_LONG                             Renamed receiver longitude
+ is_fraud / is_fraude                      TARGET_OMEGA                                Renamed target variable
+
+
+====================================================================================================
+FEATURES INTENTIONALLY REMOVED DURING PREPROCESSING
+====================================================================================================
+- street
+- city
+- state
+- zip
+- trans_num
+- unix_time
+
+
+====================================================================================================
+RAW FEATURE-NAME DIFFERENCES
 ====================================================================================================
 
-Primary dataset rows: 1852394
-Final dataset rows:   1852394
-
-Primary dataset features: 23
-Final dataset features:   22
-
-Primary dataset missing values: 0
-Final dataset missing values:   0
-
-
-====================================================================================================
-DISK SPACE COMPARISON
-====================================================================================================
-
-Primary dataset size: 472.78 MB
-Final dataset size:   49.73 MB
-Space saved:          423.06 MB
-Space reduction:      89.48%
-
-
-====================================================================================================
-FEATURES ONLY IN THE PRIMARY DATASET
-====================================================================================================
+Features present by name only in the primary dataset:
 - NID
 - trans_date_trans_time
 - cc_num
@@ -111,22 +187,10 @@ FEATURES ONLY IN THE PRIMARY DATASET
 - merch_long
 - is_fraud
 
-
-====================================================================================================
-FEATURES ONLY IN THE FINAL DATASET
-====================================================================================================
+Features present by name only in the final dataset:
 - NID_ALPHA
 - TRANS_NUM_CARD_FEWF
-- RECEIVE_LOC_FEWF
-- RECEIVE_CATEGORY_OHEWI
 - TRANS_VALUE
-- SEND_GENDER_BE
-- SEND_LAT_REGISTER
-- SEND_LONG_REGISTER
-- SEND_POP_REGISTER
-- SEND_JOB_FEWF
-- RECEIVE_LAT
-- RECEIVE_LONG
 - TRANS_DAY
 - TRANS_WEEK_OHEWI
 - TRANS_YEAR_BE
@@ -135,49 +199,127 @@ FEATURES ONLY IN THE FINAL DATASET
 - TRANS_HOUR_SIN
 - TRANS_HOUR_COS
 - SEND_NAME_FEWF
+- SEND_GENDER_BE
 - SEND_AGE
+- SEND_JOB_FEWF
+- SEND_LAT_REGISTER
+- SEND_LONG_REGISTER
+- SEND_POP_REGISTER
+- RECEIVE_LOC_FEWF
+- RECEIVE_CATEGORY_OHEWI
+- RECEIVE_LAT
+- RECEIVE_LONG
 - TARGET_OMEGA
+
+Note: these name differences include expected renaming, feature engineering, and feature removal. They should not be interpreted as data loss by themselves.
+
+
+====================================================================================================
+MISSING VALUES - PRIMARY DATASET
+====================================================================================================
+              FEATURE  MISSING_VALUES
+                  NID               0
+trans_date_trans_time               0
+               cc_num               0
+             merchant               0
+             category               0
+                  amt               0
+                first               0
+                 last               0
+               gender               0
+               street               0
+                 city               0
+                state               0
+                  zip               0
+                  lat               0
+                 long               0
+             city_pop               0
+                  job               0
+                  dob               0
+            trans_num               0
+            unix_time               0
+            merch_lat               0
+           merch_long               0
+             is_fraud               0
+
+
+====================================================================================================
+MISSING VALUES - FINAL DATASET
+====================================================================================================
+               FEATURE  MISSING_VALUES
+             NID_ALPHA               0
+   TRANS_NUM_CARD_FEWF               0
+           TRANS_VALUE               0
+             TRANS_DAY               0
+      TRANS_WEEK_OHEWI               0
+         TRANS_YEAR_BE               0
+       TRANS_MONTH_SIN               0
+       TRANS_MONTH_COS               0
+        TRANS_HOUR_SIN               0
+        TRANS_HOUR_COS               0
+        SEND_NAME_FEWF               0
+        SEND_GENDER_BE               0
+              SEND_AGE               0
+         SEND_JOB_FEWF               0
+     SEND_LAT_REGISTER               0
+    SEND_LONG_REGISTER               0
+     SEND_POP_REGISTER               0
+      RECEIVE_LOC_FEWF               0
+RECEIVE_CATEGORY_OHEWI               0
+           RECEIVE_LAT               0
+          RECEIVE_LONG               0
+          TARGET_OMEGA               0
 
 
 ====================================================================================================
 FINAL FEATURE SUMMARY
 ====================================================================================================
-               FEATURE     TYPE                                                                                             DESCRIPTION
-             NID_ALPHA    int32                                                         Unique identifier assigned to each transaction.
-   TRANS_NUM_CARD_FEWF    int64                        Credit card number feature prepared for Frequency Encoding With Fallback (FEWF).
-      RECEIVE_LOC_FEWF category Merchant or transaction receiver location feature prepared for Frequency Encoding With Fallback (FEWF).
-RECEIVE_CATEGORY_OHEWI category                         Transaction category feature prepared for One-Hot Encoding With Ignore (OHEWI).
-           TRANS_VALUE  float64                                                                      Monetary value of the transaction.
-        SEND_GENDER_BE category                                                Sender gender feature prepared for Binary Encoding (BE).
-     SEND_LAT_REGISTER  float32                                                         Registered latitude associated with the sender.
-    SEND_LONG_REGISTER  float32                                                        Registered longitude associated with the sender.
-     SEND_POP_REGISTER    int32                                                             Population of the sender's registered city.
-         SEND_JOB_FEWF category                         Sender occupation feature prepared for Frequency Encoding With Fallback (FEWF).
-           RECEIVE_LAT  float32                                          Latitude associated with the transaction receiver or merchant.
-          RECEIVE_LONG  float32                                         Longitude associated with the transaction receiver or merchant.
-             TRANS_DAY     int8                                                     Day of the month on which the transaction occurred.
-      TRANS_WEEK_OHEWI category                                  Day-of-week feature prepared for One-Hot Encoding With Ignore (OHEWI).
-         TRANS_YEAR_BE    int16                                             Transaction year feature prepared for Binary Encoding (BE).
-       TRANS_MONTH_SIN  float32                                   Sine component of the cyclic transformation of the transaction month.
-       TRANS_MONTH_COS  float32                                 Cosine component of the cyclic transformation of the transaction month.
-        TRANS_HOUR_SIN  float32                                    Sine component of the cyclic transformation of the transaction time.
-        TRANS_HOUR_COS  float32                                  Cosine component of the cyclic transformation of the transaction time.
-        SEND_NAME_FEWF category                          Sender full-name feature prepared for Frequency Encoding With Fallback (FEWF).
-              SEND_AGE  float32        Sender age in decimal years, calculated from the date of birth using the defined reference date.
-          TARGET_OMEGA     int8                                       Target variable indicating whether the transaction is fraudulent.
+               FEATURE     TYPE  UNIQUE_VALUES  MISSING_VALUES                                                                                                                                  DESCRIPTION
+             NID_ALPHA    int32        1852394               0                                                                                   Unique sequential identifier assigned to each transaction.
+   TRANS_NUM_CARD_FEWF    int64            999               0       Credit card number feature preserved in its original categorical form and prepared for future Frequency Encoding With Fallback (FEWF).
+           TRANS_VALUE  float64          60616               0                                                                                                           Monetary value of the transaction.
+             TRANS_DAY     int8             31               0                                                                                          Day of the month on which the transaction occurred.
+      TRANS_WEEK_OHEWI category              7               0                    Day-of-week feature preserved as the original weekday label and prepared for future One-Hot Encoding With Ignore (OHEWI).
+         TRANS_YEAR_BE    int16              2               0                                          Transaction year preserved as the original year value and prepared for future Binary Encoding (BE).
+       TRANS_MONTH_SIN  float64             11               0                                                                          Sine component of the cyclical representation of transaction month.
+       TRANS_MONTH_COS  float64             11               0                                                                        Cosine component of the cyclical representation of transaction month.
+        TRANS_HOUR_SIN  float64          73812               0                                       Sine component of the cyclical representation of transaction time, including hour, minute, and second.
+        TRANS_HOUR_COS  float64          75789               0                                     Cosine component of the cyclical representation of transaction time, including hour, minute, and second.
+        SEND_NAME_FEWF category            989               0                       Sender full name constructed from first and last name and prepared for future Frequency Encoding With Fallback (FEWF).
+        SEND_GENDER_BE category              2               0                                               Sender gender preserved as the original category and prepared for future Binary Encoding (BE).
+              SEND_AGE  float32            927               0                                         Sender age in decimal years calculated from date of birth using the fixed reference date 2026-09-03.
+         SEND_JOB_FEWF category            497               0                Sender occupation preserved in its original categorical form and prepared for future Frequency Encoding With Fallback (FEWF).
+     SEND_LAT_REGISTER  float32            983               0                                                                                              Registered latitude associated with the sender.
+    SEND_LONG_REGISTER  float32            983               0                                                                                             Registered longitude associated with the sender.
+     SEND_POP_REGISTER    int32            891               0                                                                                                  Population of the sender's registered city.
+      RECEIVE_LOC_FEWF category            693               0 Merchant or transaction receiver preserved in its original categorical form and prepared for future Frequency Encoding With Fallback (FEWF).
+RECEIVE_CATEGORY_OHEWI category             14               0                        Transaction category preserved as the original category and prepared for future One-Hot Encoding With Ignore (OHEWI).
+           RECEIVE_LAT  float64        1754157               0                                                                               Latitude associated with the transaction receiver or merchant.
+          RECEIVE_LONG  float64        1809753               0                                                                              Longitude associated with the transaction receiver or merchant.
+          TARGET_OMEGA     int8              2               0                                                                     Binary target variable indicating whether the transaction is fraudulent.
 
 
 ====================================================================================================
 RANDOM SAMPLE - 10 ROWS
 ====================================================================================================
- NID_ALPHA  TRANS_NUM_CARD_FEWF                        RECEIVE_LOC_FEWF RECEIVE_CATEGORY_OHEWI  TRANS_VALUE SEND_GENDER_BE  SEND_LAT_REGISTER  SEND_LONG_REGISTER  SEND_POP_REGISTER                        SEND_JOB_FEWF  RECEIVE_LAT  RECEIVE_LONG  TRANS_DAY TRANS_WEEK_OHEWI  TRANS_YEAR_BE  TRANS_MONTH_SIN  TRANS_MONTH_COS  TRANS_HOUR_SIN  TRANS_HOUR_COS    SEND_NAME_FEWF  SEND_AGE  TARGET_OMEGA
-   1541145     5359543825610251        fraud_Jenkins, Hauck and Friesen          gas_transport        59.91              M          45.780102         -111.143898              18182                   Engineer, drilling    45.274075   -111.649429         18           Friday           2020    -8.660254e-01    -5.000000e-01        0.948807       -0.315856   Michael Francis 51.180000             0
-   1731582     5540636818935089                    fraud_Jast-McDermott           shopping_pos         3.96              M          42.691101          -71.160500              76383                         Geoscientist    43.356277    -71.008957          5         Saturday           2020    -5.000000e-01     8.660254e-01       -0.998723       -0.050520    Kenneth Foster 41.419998             0
-    354660     2720894374956739                 fraud_Bartoletti-Wunsch          gas_transport        51.17              F          42.597801          -82.882301              16305     Psychologist, sport and exercise    42.372482    -83.508018         15         Saturday           2019     5.000000e-01    -8.660254e-01        0.153273       -0.988184    Audrey Hickman 99.279999             0
-   1493789     6011438889172900           fraud_Roob, Conn and Tremblay           shopping_pos         2.06              F          34.285301          -91.333603               5161                  Electrical engineer    33.833389    -91.158295         29         Saturday           2020    -5.000000e-01    -8.660254e-01       -0.298971        0.954262     Allison Allen 33.410000             0
-    468149          60495593109     fraud_Kilback, Nitzsche and Leffler                 travel         6.58              M          32.769901          -96.742996            1263321           Television camera operator    32.458645    -96.577003         25         Thursday           2019     1.224647e-16    -1.000000e+00       -0.844756       -0.535151    Randall Dillon 83.779999             0
-   1389855     6011477612335392        fraud_Cormier, Stracke and Thiel          entertainment        24.49              M          40.406200          -84.507599               2274        Designer, television/film set    39.503887    -84.030235         23         Thursday           2020     1.224647e-16    -1.000000e+00       -0.991340       -0.131319   Anthony Roberts 82.709999             0
-   1760907     2703186189652095                        fraud_Skiles LLC                   home        99.74              F          36.078800          -81.178101               3495            Psychologist, counselling    36.821934    -81.063286         11           Friday           2020    -5.000000e-01     8.660254e-01       -0.229271        0.973363    Jennifer Banks 38.490002             0
-    469448     4839615922685395                   fraud_Vandervort-Funk            grocery_pos       147.12              M          39.013000          -86.545700                 76                    Social researcher    38.202347    -86.136017         26           Friday           2019     1.224647e-16    -1.000000e+00        0.962139        0.272560 Phillip Robertson 71.330002             0
-   1835019     3553629419254918                        fraud_Sporer Inc          gas_transport        46.85              F          48.340000         -122.345596                 85    Research officer, political party    47.631939   -122.506516         28           Monday           2020    -5.000000e-01     8.660254e-01        0.911882       -0.410454    Sharon Johnson 42.000000             0
-    240728        4481131401752 fraud_Wintheiser, Dietrich and Schimmel               misc_pos        33.56              M          42.284801          -71.720497              35299 English as a second language teacher    42.740677    -72.593285         30          Tuesday           2019     1.000000e+00     6.123234e-17       -0.731849       -0.681466      Frank Foster 51.349998             0
+ NID_ALPHA  TRANS_NUM_CARD_FEWF  TRANS_VALUE  TRANS_DAY TRANS_WEEK_OHEWI  TRANS_YEAR_BE  TRANS_MONTH_SIN  TRANS_MONTH_COS  TRANS_HOUR_SIN  TRANS_HOUR_COS    SEND_NAME_FEWF SEND_GENDER_BE  SEND_AGE                        SEND_JOB_FEWF  SEND_LAT_REGISTER  SEND_LONG_REGISTER  SEND_POP_REGISTER                        RECEIVE_LOC_FEWF RECEIVE_CATEGORY_OHEWI  RECEIVE_LAT  RECEIVE_LONG  TARGET_OMEGA
+   1541145     5359543825610251        59.91         18           Friday           2020    -8.660254e-01    -5.000000e-01        0.948807       -0.315856   Michael Francis              M 51.180000                   Engineer, drilling          45.780102         -111.143898              18182        fraud_Jenkins, Hauck and Friesen          gas_transport    45.274075   -111.649432             0
+   1731582     5540636818935089         3.96          5         Saturday           2020    -5.000000e-01     8.660254e-01       -0.998723       -0.050520    Kenneth Foster              M 41.419998                         Geoscientist          42.691101          -71.160500              76383                    fraud_Jast-McDermott           shopping_pos    43.356278    -71.008959             0
+    354660     2720894374956739        51.17         15         Saturday           2019     5.000000e-01    -8.660254e-01        0.153273       -0.988184    Audrey Hickman              F 99.279999     Psychologist, sport and exercise          42.597801          -82.882301              16305                 fraud_Bartoletti-Wunsch          gas_transport    42.372483    -83.508020             0
+   1493789     6011438889172900         2.06         29         Saturday           2020    -5.000000e-01    -8.660254e-01       -0.298971        0.954262     Allison Allen              F 33.410000                  Electrical engineer          34.285301          -91.333603               5161           fraud_Roob, Conn and Tremblay           shopping_pos    33.833389    -91.158293             0
+    468149          60495593109         6.58         25         Thursday           2019     1.224647e-16    -1.000000e+00       -0.844756       -0.535151    Randall Dillon              M 83.779999           Television camera operator          32.769901          -96.742996            1263321     fraud_Kilback, Nitzsche and Leffler                 travel    32.458643    -96.577001             0
+   1389855     6011477612335392        24.49         23         Thursday           2020     1.224647e-16    -1.000000e+00       -0.991340       -0.131319   Anthony Roberts              M 82.709999        Designer, television/film set          40.406200          -84.507599               2274        fraud_Cormier, Stracke and Thiel          entertainment    39.503889    -84.030238             0
+   1760907     2703186189652095        99.74         11           Friday           2020    -5.000000e-01     8.660254e-01       -0.229271        0.973363    Jennifer Banks              F 38.490002            Psychologist, counselling          36.078800          -81.178101               3495                        fraud_Skiles LLC                   home    36.821934    -81.063288             0
+    469448     4839615922685395       147.12         26           Friday           2019     1.224647e-16    -1.000000e+00        0.962139        0.272560 Phillip Robertson              M 71.330002                    Social researcher          39.013000          -86.545700                 76                   fraud_Vandervort-Funk            grocery_pos    38.202346    -86.136019             0
+   1835019     3553629419254918        46.85         28           Monday           2020    -5.000000e-01     8.660254e-01        0.911881       -0.410454    Sharon Johnson              F 42.000000    Research officer, political party          48.340000         -122.345596                 85                        fraud_Sporer Inc          gas_transport    47.631938   -122.506513             0
+    240728        4481131401752        33.56         30          Tuesday           2019     1.000000e+00     6.123234e-17       -0.731849       -0.681466      Frank Foster              M 51.349998 English as a second language teacher          42.284801          -71.720497              35299 fraud_Wintheiser, Dietrich and Schimmel               misc_pos    42.740677    -72.593286             0
+
+
+====================================================================================================
+FINAL PREPROCESSING VALIDATION RESULT
+====================================================================================================
+
+PASS
+
+All defined preprocessing integrity checks passed.
+The final dataset preserved the expected observations, identifier order, target values, feature structure, and missing-value requirements.
